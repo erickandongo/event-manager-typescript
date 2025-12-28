@@ -1,0 +1,13 @@
+#node and modules 
+node_modules/
+
+#generated folders
+dist/
+build/
+out/
+
+#Temporary files
+.vscode/
+
+#git system
+.git

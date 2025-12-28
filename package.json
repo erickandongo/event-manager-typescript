@@ -1,0 +1,12 @@
+{
+  "name": "event-manager-ts",
+  "version": "1.0.0",
+  "description": "Mini TypeScript event management application",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
