@@ -1,6 +1,6 @@
-import {Event} from "./models/Event";
-import { User } from "./models/User";
-import { Registration } from "./models/Registration";
+import {Event} from "./models/Event.js";
+import { User } from "./models/User.js";
+import { Registration } from "./models/Registration.js";
 
 
 //Data Storage 
@@ -44,21 +44,69 @@ export function registerUserToEvent(user: User, event: Event): string{
     return "Registration successful";
 }
 
-// Test event
-const e1 = new Event(1, "TS Workshop", "Learn TypeScript", new Date("2026-05-01"), "Room 101", "workshop", 2);
 
-// Test users
-const u1 = new User("Alice Smith", "alice@school.edu");
-const u2 = new User("Bob Brown", "bob@school.edu");
+const eventForm = document.getElementById("eventForm") as HTMLFormElement;
+const eventListDiv = document.getElementById("eventList") as HTMLDivElement;
+const filterCategory = document.getElementById("filterCategory") as HTMLSelectElement;
 
-// Add event
-addEvent(e1);
+//show all the events list 
+function renderEvents(eventArray: Event[]) {
+    eventListDiv.innerHTML = "";
 
-// Register users
-console.log(registerUserToEvent(u1, e1)); // Registration successful
-console.log(registerUserToEvent(u2, e1)); // Registration successful
-console.log(registerUserToEvent(u1, e1)); // User already registered
-console.log(registerUserToEvent(new User("Charlie", "charlie@school.edu"), e1)); // Event is full
+    eventArray.forEach(event => {
+        const div = document.createElement("div");
+        div.className = "event-card";
+        div.innerHTML = `
+        <h3>${event.title}</h3>
+        <p>${event.description}</p>
+        <p><strong>Category:</strong> ${event.category}</p>
+        <p><strong>Date:</strong> ${event.date.toDateString()}</p>
+        <p><strong>Capacity:</strong> ${event.num_participants}/${event.maxCapacity}</p>
+        `;
+        eventListDiv.appendChild(div);
+    });
+}
 
-console.log(events, users, registrations);
+filterCategory.addEventListener('change', () => {
+    const value = filterCategory.value;
+    if(value === "all"){
+        renderEvents(events);
+    }
+    else{
+        renderEvents(events.filter(e => e.category === value));
+    }
+})
 
+eventForm.addEventListener('submit', (e) =>{
+    e.preventDefault();
+
+    const title = (document.getElementById("title") as HTMLInputElement).value;
+    const description = (document.getElementById("description") as HTMLInputElement).value;
+    const date = new Date((document.getElementById("date") as HTMLInputElement).value);
+    const location = (document.getElementById("location") as HTMLInputElement).value;
+    const category = (document.getElementById("category") as HTMLSelectElement).value;
+    const capacity = Number((document.getElementById("capacity") as HTMLInputElement).value);
+
+    const newEvent = new Event(
+        events.length + 1,
+        title,
+        description,
+        date,
+        location,
+        category,
+        capacity
+    );
+    addEvent(newEvent);
+
+    console.log("EVENT CREATED:", newEvent);
+    console.log("EVENTS ARRAY:", events);
+
+    const filterValue = filterCategory.value;
+    if(filterValue === "all"){
+        renderEvents(events);
+    } else {
+        renderEvents(events.filter(e => e.category === filterValue));
+    }
+    eventForm.reset();
+
+});
