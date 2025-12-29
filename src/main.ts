@@ -49,6 +49,28 @@ const eventForm = document.getElementById("eventForm") as HTMLFormElement;
 const eventListDiv = document.getElementById("eventList") as HTMLDivElement;
 const filterCategory = document.getElementById("filterCategory") as HTMLSelectElement;
 
+const eventDetailsSection = document.getElementById("eventDetails")as HTMLElement;
+const detailsContent = document.getElementById("detailsContent") as HTMLDivElement;
+const registrationForm = document.getElementById("registrationForm") as HTMLFormElement;
+const registrationMessage = document.getElementById("registrationMessage") as HTMLParagraphElement;
+ 
+let selectedEvent: Event | null = null;
+
+function showEventDetails(event: Event){
+    selectedEvent = event;
+    eventDetailsSection.style.display = 'block';
+
+    detailsContent.innerHTML = `
+    <p><strong>Title:</strong> ${event.title}</p>
+    <p><strong>Description:</strong> ${event.description}</p>
+    <p><strong>Date:</strong> ${event.date.toDateString()}</p>
+    <p><strong>Location:</strong> ${event.location}</p>
+    <p><strong>Category:</strong> ${event.category}</p>
+    <p><strong>Capacity:</strong> ${event.num_participants}/${event.maxCapacity}</p>
+  `;
+
+}
+
 //show all the events list 
 function renderEvents(eventArray: Event[]) {
     eventListDiv.innerHTML = "";
@@ -58,11 +80,13 @@ function renderEvents(eventArray: Event[]) {
         div.className = "event-card";
         div.innerHTML = `
         <h3>${event.title}</h3>
-        <p>${event.description}</p>
-        <p><strong>Category:</strong> ${event.category}</p>
+        <p><strong>Location:</strong> ${event.location}</p>
         <p><strong>Date:</strong> ${event.date.toDateString()}</p>
         <p><strong>Capacity:</strong> ${event.num_participants}/${event.maxCapacity}</p>
+        <button data-id="${event.id}">View Details</button>
         `;
+
+        div.querySelector("button")!.addEventListener("click", () => showEventDetails(event));
         eventListDiv.appendChild(div);
     });
 }
@@ -108,5 +132,24 @@ eventForm.addEventListener('submit', (e) =>{
         renderEvents(events.filter(e => e.category === filterValue));
     }
     eventForm.reset();
+
+});
+
+registrationForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    if (!selectedEvent) return;
+
+    const fullName = (document.getElementById("fullName") as HTMLInputElement).value;
+    const email = (document.getElementById("email") as HTMLInputElement).value;
+
+    const user = new User(fullName, email);
+    const result = registerUserToEvent(user, selectedEvent);
+
+    registrationMessage.textContent = result;
+
+    renderEvents(events);
+    showEventDetails(selectedEvent);
+    registrationForm.reset();
 
 });
