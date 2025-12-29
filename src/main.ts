@@ -69,6 +69,10 @@ function showEventDetails(event: Event){
     <p><strong>Capacity:</strong> ${event.num_participants}/${event.maxCapacity}</p>
   `;
 
+  const isDisabled = event.isFull() || event.isPast();
+  (registrationForm.querySelector("button") as HTMLButtonElement).disabled = isDisabled;
+
+
 }
 
 //show all the events list 
@@ -147,6 +151,13 @@ registrationForm.addEventListener("submit", (e) => {
     const result = registerUserToEvent(user, selectedEvent);
 
     registrationMessage.textContent = result;
+
+    if (result === "Registration successful") {
+        registrationMessage.className = "success";
+    } 
+    else {
+        registrationMessage.className = "error";
+    }
 
     renderEvents(events);
     showEventDetails(selectedEvent);

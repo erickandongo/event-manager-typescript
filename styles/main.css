@@ -38,3 +38,25 @@ button:hover {
   padding: 10px;
   margin-bottom: 10px;
 }
+
+.event-card h3 {
+  margin-top: 0;
+}
+
+#eventDetails {
+  border-left: 5px solid #007bff;
+}
+
+#registrationMessage {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.success {
+  color: green;
+}
+
+.error {
+  color: red;
+}
+
