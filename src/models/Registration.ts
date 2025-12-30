@@ -1,5 +1,5 @@
-import { Event } from "./Event";
-import { User } from "./User";
+import { Event } from "./Event.js";
+import { User } from "./User.js";
 
 export class Registration {
     constructor(

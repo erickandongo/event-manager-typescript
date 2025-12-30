@@ -53,6 +53,29 @@ const eventDetailsSection = document.getElementById("eventDetails")as HTMLElemen
 const detailsContent = document.getElementById("detailsContent") as HTMLDivElement;
 const registrationForm = document.getElementById("registrationForm") as HTMLFormElement;
 const registrationMessage = document.getElementById("registrationMessage") as HTMLParagraphElement;
+
+function goToPage(pageId: string): void {
+  const pages = document.querySelectorAll<HTMLElement>('.page');
+
+  pages.forEach((page) => {
+    page.classList.remove('active');
+  });
+
+  const targetPage = document.getElementById(pageId);
+
+  if (targetPage) {
+    targetPage.classList.add('active');
+  }
+}
+
+document.querySelectorAll<HTMLButtonElement>('[data-page]')
+  .forEach(button => {
+    button.addEventListener('click', () => {
+      const page = button.dataset.page;
+      if (page) goToPage(page);
+    });
+  });
+
  
 let selectedEvent: Event | null = null;
 
@@ -87,7 +110,7 @@ function renderEvents(eventArray: Event[]) {
         <p><strong>Location:</strong> ${event.location}</p>
         <p><strong>Date:</strong> ${event.date.toDateString()}</p>
         <p><strong>Capacity:</strong> ${event.num_participants}/${event.maxCapacity}</p>
-        <button data-id="${event.id}">View Details</button>
+        <button data-id="${event.id}" ">View Details</button>
         `;
 
         div.querySelector("button")!.addEventListener("click", () => showEventDetails(event));
@@ -104,6 +127,9 @@ filterCategory.addEventListener('change', () => {
         renderEvents(events.filter(e => e.category === value));
     }
 })
+
+
+
 
 eventForm.addEventListener('submit', (e) =>{
     e.preventDefault();

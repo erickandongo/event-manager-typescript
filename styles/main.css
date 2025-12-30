@@ -1,3 +1,11 @@
+.page{
+    display: none;
+}
+
+.page.active{
+    display: block;
+}
+
 body{
     font-family: Arial, sans-serif;
     padding: 20px;
@@ -15,12 +23,56 @@ section {
   border-radius: 6px;
 }
 
+.icon-text{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.icon-text span{
+    font-size: 50px;
+    margin-top: 10px;
+}
+
+.text h1{
+    margin-bottom: 0px;
+}
+
+.text p{
+    margin-top: 3px;
+}
+
+.button-wrapper {
+    margin-left: auto;
+}
+
+
+.button span{
+    font-size: 24px;
+    color: #ffffff;
+    margin-top: 0px;
+}
+
+.button{
+    background-color: #6419e6;
+    padding: 5px;
+    width: 135px;
+    height: 40px; 
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 input, select, button {
   display: block;
   margin: 8px 0;
   padding: 8px;
   width: 90%;
 }
+
 
 button {
   background: #007bff;
